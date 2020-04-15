@@ -52,7 +52,9 @@ h2 {
   border-top: 2px solid #e7e7e7;
   padding-top: 20px;
 }
-
+pre {
+  font-size: initial;
+}
 th {
   border-bottom: 2px solid #D8B493;
   text-align: left;
