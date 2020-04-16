@@ -21,19 +21,14 @@ app.use('/', routes)
 
 // error handler
 app.use((err, req, res, next) => {
-  // set locals, only providing error in development
-  res.locals.message = err.message
-  res.locals.error = req.app.get('env') === 'development' ? err : {}
-  console.log(err.message)
   // render the error page
   res.status(err.status || 500)
   res.render('books/errors')
-  next(err)
+  console.log('500 handler called')
 })
 
-app.use((err, req, res, next) => {
-  res.status(err.status || 404)
+app.use((req, res, next) => {
   res.render('books/page_not_found')
+  console.log('404 handler called')
 })
-
 module.exports = app

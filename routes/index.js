@@ -7,7 +7,7 @@ function asyncHandler (cb) {
     try {
       await cb(req, res, next)
     } catch (error) {
-      res.status(500).send(error)
+      next(error)
     }
   }
 }
@@ -62,7 +62,7 @@ router.post('/books/:id', asyncHandler(async (req, res) => {
       await book.update(req.body)
       res.redirect('/books')// Redirect after updating book entry
     } else {
-      res.sendStatus(404)
+      res.render('books/page_not_found')
     }
   } catch (error) {
     if (error.name === 'SequelizeValidationError') {
@@ -74,15 +74,12 @@ router.post('/books/:id', asyncHandler(async (req, res) => {
     }
   }
 }))
+
 /* Delete individual book. */
 router.post('/books/:id/delete', asyncHandler(async (req, res) => {
   const book = await Book.findByPk(req.params.id)
-  if (book) {
-    await book.destroy()
-    res.redirect('/books')// Redirect after deleting book entry
-  } else {
-    res.sendStatus(404)
-  }
+  await book.destroy()
+  res.redirect('/books')// Redirect after deleting book entry
 }))
 
 module.exports = router

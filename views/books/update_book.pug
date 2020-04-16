@@ -2,8 +2,11 @@ extends ../layout
 
 block content
   h1= title
-  
-  include errors
+  if(errors)
+    h2.errors Oops an error occurred!
+    ul.errors
+      each error in errors
+        li= error.message
   
   form(action="/books/"+book.id, method="post", onsubmit="return confirm('Please confirm your updates and press OK');")
     include form
