@@ -7,12 +7,13 @@ function asyncHandler (cb) {
     try {
       await cb(req, res, next)
     } catch (error) {
+      console.log(error)
       next(error)
     }
   }
 }
 /* GET home page. */
-router.get('/', asyncHandler(async (req, res, next) => {
+router.get('/', asyncHandler(async (req, res) => {
   res.redirect('/books')
 }))
 
@@ -46,11 +47,7 @@ router.post('/books/new', asyncHandler(async (req, res) => {
 /* Edit book form. */
 router.get('/books/:id', asyncHandler(async (req, res) => {
   const book = await Book.findByPk(req.params.id)
-  if (book) {
-    res.render('books/update_book', { book, title: 'Edit Book' })
-  } else {
-    res.sendStatus(404)
-  }
+  res.render('books/update_book', { book, title: 'Edit Book' })
 }))
 
 /* Update an book. */
@@ -58,12 +55,8 @@ router.post('/books/:id', asyncHandler(async (req, res) => {
   let book
   try {
     book = await Book.findByPk(req.params.id)
-    if (book) {
-      await book.update(req.body)
-      res.redirect('/books')// Redirect after updating book entry
-    } else {
-      res.render('books/page_not_found')
-    }
+    await book.update(req.body)
+    res.redirect('/books')// Redirect after updating book entry
   } catch (error) {
     if (error.name === 'SequelizeValidationError') {
       book = await Book.build(req.body)
