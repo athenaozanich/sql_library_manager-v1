@@ -8,9 +8,9 @@ block content
       each error in errors
         li= error.message
   
-  form(action="/books/new", method="post", onsubmit="return confirm('Confirm your data, then click OK to add this entry.');")
+  form(action="/books/new/", method="post", onsubmit="return confirm('Confirm your data, then click OK to add this entry.');")
     include form
     p
       input(type="submit", value="Create New Book")
     p
-      a(href="/books", class="button") Cancel
+      a(href="/books/", class="button") Cancel

@@ -1,5 +1,7 @@
 const express = require('express')
 const router = express.Router()
+const Sequelize = require('sequelize')
+const Op = Sequelize.Op
 const Book = require('../models').Book
 /* Handler function to wrap each route. */
 function asyncHandler (cb) {
@@ -18,22 +20,45 @@ router.get('/', asyncHandler(async (req, res) => {
 }))
 
 /* GET books listing. */
-router.get('/books', asyncHandler(async (req, res) => {
+router.get('/books/', asyncHandler(async (req, res) => {
   const books = await Book.findAll(/* { order: [['year', 'ASC']] } */)// commenting out my preferred ordering until after grading
   res.render('index', { books, title: 'Library Inventory Manager' })
 }))
 
+router.get('/books/:bkQry/', asyncHandler(async (req, res) => {
+  console.log(req.query.name)
+  const books = await Book.findAll({
+    where: {
+      [Op.or]: [
+        {
+          title: { [Op.like]: `%${req.params.bkQry}%` }
+        },
+        {
+          author: { [Op.like]: `%${req.params.bkQry}%` }
+        },
+        {
+          genre: { [Op.like]: `%${req.params.bkQry}%` }
+        },
+        {
+          year: { [Op.like]: `%${req.params.bkQry}%` }
+        }
+      ]
+    }
+  })
+  res.render('index', { books })
+}))
+
 /* Create a new book form. */
-router.get('/books/new', asyncHandler(async (req, res) => {
+router.get('/books/new/', asyncHandler(async (req, res) => {
   res.render('books/new_book', { book: {}, title: 'New Book' })
 }))
 
 /* POST create book. */
-router.post('/books/new', asyncHandler(async (req, res) => {
+router.post('/books/new/', asyncHandler(async (req, res) => {
   let book
   try {
     book = await Book.create(req.body)
-    res.redirect('/books')// redirect after book entry creation
+    res.redirect('/books/')// redirect after book entry creation
   } catch (error) {
     if (error.name === 'SequelizeValidationError') { // checking the error
       book = await Book.build(req.body)
@@ -45,13 +70,13 @@ router.post('/books/new', asyncHandler(async (req, res) => {
 }))
 
 /* Edit book form. */
-router.get('/books/:id', asyncHandler(async (req, res) => {
+router.get('/books/:id/', asyncHandler(async (req, res) => {
   const book = await Book.findByPk(req.params.id)
   res.render('books/update_book', { book, title: 'Edit Book' })
 }))
 
 /* Update an book. */
-router.post('/books/:id', asyncHandler(async (req, res) => {
+router.post('/books/:id/', asyncHandler(async (req, res) => {
   let book
   try {
     book = await Book.findByPk(req.params.id)
@@ -69,7 +94,7 @@ router.post('/books/:id', asyncHandler(async (req, res) => {
 }))
 
 /* Delete individual book. */
-router.post('/books/:id/delete', asyncHandler(async (req, res) => {
+router.post('/books/:id/delete/', asyncHandler(async (req, res) => {
   const book = await Book.findByPk(req.params.id)
   await book.destroy()
   res.redirect('/books')// Redirect after deleting book entry
