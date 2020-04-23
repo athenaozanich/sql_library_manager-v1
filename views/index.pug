@@ -1,11 +1,11 @@
 extends layout
 
 block content
-  h1 Books
+  h1= title
   p= query
     a(href="/books/new/", class="button") Create New Book
   header
-    form(action="/books/results/", method="get")
+    form(action="/books/results/pg/"+currPg+"/", method="get")
       label(for="search") Search the catalog
       input(type="text", id="search", name="query", placeholder="search titles, authors, genres, and years")
       input(type="submit", value="Search")
@@ -24,3 +24,21 @@ block content
           td= book.author
           td= book.genre
           td= book.year
+  - var n = 1;
+  ul
+    while n < numOfPgs+1
+      if n == currPg
+        li(class="active")
+          if qry
+            a(href=routePath+n+"/?query="+ qry)= n++
+          else
+            a(href=routePath+n+"/")= n++
+      else 
+        li
+          if qry
+            a(href=routePath+n+"/?query="+ qry)= n++
+          else
+            a(href=routePath+n+"/")= n++
+  if qry 
+    p
+      a(class="button" href="/books/pg/1") Home

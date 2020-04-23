@@ -15,6 +15,6 @@ block content
 
   form(action="/books/"+book.id+"/delete", method="post", onsubmit="return confirm('Do you really want to delete this book?');")
     p
-      a(href="/books/", class="button") Cancel
+      a(href="/books/pg/1", class="button") Cancel
     p
       input(type="submit", value="Delete Book")

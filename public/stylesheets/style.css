@@ -7,7 +7,6 @@ a {
   color: #019875;
   text-decoration: none;
   font-weight: bold;
-  transition: 0.4s;
 }
 
   a:hover {
@@ -26,7 +25,6 @@ a.button, input[type=submit] {
 
 form a.button, input[type=submit] {
   margin-left: 140px;
-  transition: 0.4s;
 }
 
 input[type=submit] {
@@ -47,7 +45,18 @@ ul {
   margin-bottom: 10px;
   line-height: 1.3em;
 }
-
+li {
+  display: inline-block;
+  margin: 6px;
+  border: 1px solid black;
+}
+li a {
+  padding: 11px;
+}
+.active{
+  text-decoration: underline;
+  background-color: blanchedalmond;
+}
 h2 {
   border-top: 2px solid #e7e7e7;
   padding-top: 20px;
@@ -77,7 +86,6 @@ label {
   font-weight: bold;
   min-width: 130px;
   display: inline-block;
-  transition: 0.4s;
 }
 
 input {
@@ -86,7 +94,6 @@ input {
   font-size: 14px;
   border-radius: 2px;
   border-color: #E7E7E7;
-  transition: 0.4s;
 }
 
 input[type=text] {
