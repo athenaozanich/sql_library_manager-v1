@@ -18,8 +18,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-
-// error handler
+/* 404 handler */
+app.use((req, res, next) => {
+  res.render('books/page_not_found');
+  console.log('404 handler called');
+});
+/* error handler */
 app.use((err, req, res, next) => {
   // render the error page
   res.status(err.status || 500);
@@ -27,8 +31,5 @@ app.use((err, req, res, next) => {
   console.log('500 handler called');
 });
 
-app.use((req, res, next) => {
-  res.render('books/page_not_found');
-  console.log('404 handler called');
-});
+
 module.exports = app;

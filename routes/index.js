@@ -14,6 +14,7 @@ function asyncHandler (cb) {
     }
   }
 }
+/* pagination callback for database results paginating */
 const paginate = (page, pageSize) => {
   const offset = page * pageSize;
   const limit = pageSize;
@@ -28,7 +29,7 @@ router.get('/', asyncHandler(async (req, res) => {
   res.redirect('/books/pg/1/');
 }));
 
-/* GET books listing. */
+/* GET books listing and paginate */
 router.get('/books/pg/:pgNum/', asyncHandler(async (req, res) => {
   const currPg = req.params.pgNum || 1;
   const bksPrPg = 5;
@@ -41,26 +42,20 @@ router.get('/books/pg/:pgNum/', asyncHandler(async (req, res) => {
   console.log(currPg);
   res.render('index', { routePath, currPg, numOfPgs, books, title: 'Library Inventory Manager' })
 }));
-
+/* GET books listing matching search filter and paginate */
 router.get('/books/results/pg/:pgNum/', asyncHandler(async (req, res) => {
   const currPg = req.params.pgNum || 1;
   const bksPrPg = 5;
   const requestedQry = { [Op.like]: `%${req.query.query}%` }
   const { count, rows } = await Book.findAndCountAll({
-    where: {
-      [Op.or]: [
-        {
-          title: requestedQry
-        },
-        {
-          author: requestedQry
-        },
-        {
-          genre: requestedQry
-        },
-        {
-          year: requestedQry
-        }
+    where: 
+    {
+      [Op.or]: 
+      [
+        { title: requestedQry },
+        { author: requestedQry },
+        { genre: requestedQry },
+        { year: requestedQry }
       ]
     },
     ...paginate(req.params.pgNum -1 , bksPrPg)
