@@ -20,7 +20,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 /* 404 handler */
 app.use((req, res, next) => {
-  res.render('books/page_not_found');
+  res.render('books/page-not-found');
   console.log('404 handler called');
 });
 /* error handler */
