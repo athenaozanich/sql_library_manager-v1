@@ -18,7 +18,6 @@
   4. git and github
   5. Fluid-Mobile First Responsive Design (w/o media queries)
   8. Form validation
-  9. Auto Complete Search messages
 
 ## Techdegree Project Description
   Many websites do more than just give you information. Sites like GitHub, Zillow, Mint and Treehouse let users do things. They act like programs you run on your computer. These web applications, often include pages for looking at your profile, what you've done in the week or what you need to get done. These "dashboards" act like your control panel for controlling the web app.
